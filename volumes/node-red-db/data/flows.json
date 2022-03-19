@@ -1,0 +1,205 @@
+[
+    {
+        "id": "817de38425d9aaef",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "260f6c84d9c75277",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d54809ab92484e96",
+        "type": "mqtt in",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "topic": "#",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "260f6c84d9c75277",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 160,
+        "wires": [
+            [
+                "573526b74147a7da"
+            ]
+        ]
+    },
+    {
+        "id": "573526b74147a7da",
+        "type": "debug",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "44135dc976703957",
+        "type": "mqtt out",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "260f6c84d9c75277",
+        "x": 690,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "eaded9bb4a8cb7ce",
+        "type": "inject",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "hoi",
+        "payloadType": "str",
+        "x": 210,
+        "y": 340,
+        "wires": [
+            [
+                "3c98f823ee54f0af"
+            ]
+        ]
+    },
+    {
+        "id": "5aa12ba179f06153",
+        "type": "file in",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "filename": "/hostsName",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 390,
+        "y": 520,
+        "wires": [
+            [
+                "28e9e03415ec2148"
+            ]
+        ]
+    },
+    {
+        "id": "1b355d5ccd1b6cdc",
+        "type": "inject",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 480,
+        "wires": [
+            [
+                "5aa12ba179f06153"
+            ]
+        ]
+    },
+    {
+        "id": "28e9e03415ec2148",
+        "type": "function",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "func": "global.set(\"hostsName\",\"db\" + msg.payload.replace(/(\\r\\n|\\n|\\r)/gm, \"\"));\nmsg.hostsName = global.get(\"hostsName\")\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3c98f823ee54f0af",
+        "type": "function",
+        "z": "817de38425d9aaef",
+        "name": "",
+        "func": "var hostsName = global.get(\"hostsName\");\nmsg.topic = \"serverTest/\" + hostsName;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 360,
+        "wires": [
+            [
+                "44135dc976703957"
+            ]
+        ]
+    }
+]
